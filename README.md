@@ -1,5 +1,7 @@
 # org-management-service
 
+[![CI](https://github.com/Omercanbasboga/org-management-service/actions/workflows/ci.yml/badge.svg)](https://github.com/Omercanbasboga/org-management-service/actions/workflows/ci.yml)
+
 The backend for [org-management-console](https://github.com/Omercanbasboga/org-management-console): student clubs, their members, meetings, books and bylaws, and the approval queue that most changes pass through. Spring Boot 3.5, Java 21, JPA, Spring Security as an OAuth2 resource server.
 
 **See it working:** the [console's live demo](https://omercanbasboga.github.io/org-management-console/) runs an in-browser copy of these rules. Sign a request as a club's advisor, switch to the admin and approve it.
