@@ -1,0 +1,35 @@
+# Postgres + the service in production mode. It expects a JWT issuer (the
+# gateway in front of it). For a quick look without one, run the jar with the
+# demo profile instead.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      retries: 10
+
+  app:
+    build: .
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_HOST: db
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_ISSUER_URI: ${JWT_ISSUER_URI}
+      CORS_ORIGINS: ${CORS_ORIGINS}
+      UPLOADS_DIR: /data/uploads
+    volumes: [uploads:/data/uploads]
+    ports: ["8082:8082"]
+
+volumes:
+  pgdata:
+  uploads:
